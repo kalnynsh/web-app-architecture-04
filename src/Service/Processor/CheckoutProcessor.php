@@ -2,15 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Service\Process;
+namespace Service\Processor;
 
+use Service\Processor\IProcessor;
 use Service\Builder\IBuilder;
 
 /**
  * class Checkout - checkout Basket with Product
  *
  */
-class Checkout
+class CheckoutProcessor implements IProcessor
 {
     /**
      * @property IBuilder $builder

@@ -4,16 +4,11 @@ declare(strict_types = 1);
 
 namespace Service\Order;
 
-use Model;
-use Service\Billing\Card;
-use Service\Billing\IBilling;
-use Service\Communication\Email;
-use Service\Communication\ICommunication;
-use Service\Discount\IDiscount;
-use Service\Discount\NullObject;
-use Service\User\ISecurity;
-use Service\User\Security;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Service\User\Security;
+use Service\User\ISecurity;
+use Service\Checkout\Checkout;
+use Model;
 
 class Basket
 {
@@ -81,48 +76,11 @@ class Basket
      */
     public function checkout(): void
     {
-        // Здесь должна быть некоторая логика выбора способа платежа
-        $billing = new Card();
+        $security = $this->getSecurity($this->session);
+        $products = $this->getProductsInfo();
 
-        // Здесь должна быть некоторая логика получения информации о скидки пользователя
-        $discount = new NullObject();
-
-        // Здесь должна быть некоторая логика получения способа уведомления пользователя о покупке
-        $communication = new Email();
-
-        $security = new Security($this->session);
-
-        $this->checkoutProcess($discount, $billing, $security, $communication);
-    }
-
-    /**
-     * Проведение всех этапов заказа
-     *
-     * @param IDiscount $discount,
-     * @param IBilling $billing,
-     * @param ISecurity $security,
-     * @param ICommunication $communication
-     * @return void
-     */
-    public function checkoutProcess(
-        IDiscount $discount,
-        IBilling $billing,
-        ISecurity $security,
-        ICommunication $communication
-    ): void {
-        $totalPrice = 0;
-
-        foreach ($this->getProductsInfo() as $product) {
-            $totalPrice += $product->getPrice();
-        }
-
-        $discount = $discount->getDiscount();
-        $totalPrice = $totalPrice - $totalPrice / 100 * $discount;
-
-        $billing->pay($totalPrice);
-
-        $user = $security->getUser();
-        $communication->process($user, 'checkout_template');
+        $checker = $this->getCheckout($products, $security);
+        $checker->makeCheckout();
     }
 
     /**
@@ -143,5 +101,25 @@ class Basket
     private function getProductIds(): array
     {
         return $this->session->get(static::BASKET_DATA_KEY, []);
+    }
+
+    /**
+     * Фабричный метод для Checkout
+     *
+     * @return Checkout
+     */
+    private function getCheckout(array $products, ISecurity $security): Checkout
+    {
+        return new Checkout($products, $security);
+    }
+
+    /**
+     * Фабричный метод для Security
+     *
+     * @return Security
+     */
+    private function getSecurity($session): Security
+    {
+        return new Security($session);
     }
 }

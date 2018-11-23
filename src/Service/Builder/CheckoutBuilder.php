@@ -18,7 +18,7 @@ use Service\Builder\Exception\BuilderException;
  * BasketBuilder - Concrete builder for Basket
  *
  */
-class BasketBuilder implements IBuilder
+class CheckoutBuilder implements IBuilder
 {
     /**
      * @property BasketBuilder $builder

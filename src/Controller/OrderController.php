@@ -52,25 +52,13 @@ class OrderController
         }
 
         $basket = $this->getBasket($session);
-        $basketBuilder = $basket->getBasketBuilder();
-        $this->checkout($basketBuilder);
+        $basket->checkout();
 
         return $this->render('order/checkout.html.php');
     }
 
-    public function getBuilder(): BasketBuilder
-    {
-        return new BasketBuilder();
-    }
-
     public function getBasket($session): Basket
     {
-        $builder = $this->getBuilder();
-        return new Basket($session, $builder);
-    }
-
-    public function checkout(BasketBuilder $basketBuilder): void
-    {
-        (new Checkout($basketBuilder))->process();
+        return new Basket($session);
     }
 }
