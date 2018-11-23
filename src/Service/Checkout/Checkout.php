@@ -54,6 +54,9 @@ class Checkout
 
     public function makeCheckout()
     {
+        $this->setBuilder();
+        $this->setProcessor();
+
         return $this->processor->process();
     }
 }
