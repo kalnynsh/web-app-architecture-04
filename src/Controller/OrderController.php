@@ -9,8 +9,6 @@ use Service\Order\Basket;
 use Service\User\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Service\Builder\BasketBuilder;
-use Service\Process\Checkout;
 
 class OrderController
 {

@@ -17,15 +17,12 @@
                                 <tr><td><a href="<?= $path('index') ?>">Главная</a></td></tr>
                                 <tr><td><a href="<?= $path('product_list') ?>">Товары</a></td></tr>
                                 <tr><td><a href="<?= $path('order_info') ?>">Корзина</a></td></tr>
-                                <?php if (!$isAuth) {
-    ?>
+                                <?php if (!$isAuth) : ?>
                                     <tr><td><a href="<?= $path('user_authentication') ?>">Авторизация</a></td></tr>
-                                <?php
-} else {
-        ?>
+                                <?php else :  ?>
+                                    <tr><td><a href="<?= $path('message') ?>">Создать сообщение</a></td></tr>
                                     <tr><td><a href="<?= $path('logout') ?>">Выход</a></td></tr>
-                                <?php
-    } ?>
+                                <?php endif; ?>
                             </table>
                         </td>
                         <td align="center"><br/><?= isset($body) && $body instanceof Closure ? $body() : '' ?><br/></td>

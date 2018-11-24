@@ -1,10 +1,12 @@
 <?php
 
-use Controller\MainController;
-use Controller\OrderController;
-use Controller\ProductController;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
+use Controller\UserController;
+use Controller\ProductController;
+use Controller\OrderController;
+use Controller\MessageController;
+use Controller\MainController;
 
 $routes = new RouteCollection();
 
@@ -33,11 +35,17 @@ $routes->add(
 
 $routes->add(
     'user_authentication',
-    new Route('/user/authentication', ['_controller' => [\Controller\UserController::class, 'authenticationAction']])
+    new Route('/user/authentication', ['_controller' => [UserController::class, 'authenticationAction']])
 );
+
 $routes->add(
     'logout',
-    new Route('/user/logout', ['_controller' => [\Controller\UserController::class, 'logoutAction']])
+    new Route('/user/logout', ['_controller' => [UserController::class, 'logoutAction']])
+);
+
+$routes->add(
+    'message',
+    new Route('/message/index', ['_controller' => [MessageController::class, 'indexAction']])
 );
 
 return $routes;

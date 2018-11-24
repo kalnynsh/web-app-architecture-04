@@ -2,9 +2,7 @@
 
 /** @var \Model\Entity\User $user */
 $body = function () use ($path, $user) {
-    ?>
-    Вы успешно авторизовались под логином <?= $user->getLogin() ?>
-<?php
+    echo '<p>Вы успешно авторизовались под логином: '. $user->getLogin() . '</p>';
 };
 
 $renderLayout(
